@@ -26,6 +26,13 @@ void hello_task(void *pvParameters) {
     }
 }
 
+/* 實作喚醒 Core 1 的橋接函式 */
+long vPicoWakeSecondaryCore( void ) {
+    // 這裡什麼都不用寫，因為 Pico SDK 的 multicore_launch_core1 會處理。
+    // 但如果 Port 需要一個 Symbol，我們就給它。
+    return 1;
+}
+
 // 斷言實作 (避免編譯錯誤)
 void vApplicationAssert(const char *pcFileName, uint32_t ulLine) {
     printf("ASSERT Failed: %s, line %u\n", pcFileName, (unsigned int)ulLine);
