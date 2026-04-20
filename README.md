@@ -1,11 +1,10 @@
-Build command:
+#Build command:
 
 cd ~/Rasp_pico/MyProject
 rm -rf build
 mkdir build
 cd build
 
-# 強制在命令列指定編譯器參數，這是 AE 處理複雜平台切換時的殺手鐧
 cmake -DPICO_PLATFORM=rp2350-arm-s \
       -DCMAKE_C_FLAGS="-mfloat-abi=hard -mfpu=fpv5-sp-d16" \
       -DCMAKE_CXX_FLAGS="-mfloat-abi=hard -mfpu=fpv5-sp-d16" \
@@ -14,7 +13,7 @@ cmake -DPICO_PLATFORM=rp2350-arm-s \
 make -j$(nproc)
 
 
-============FreeRTOS-Kernel===========================
+#============FreeRTOS-Kernel===========================
 
 richard@richard-virtual-machine:~/Rasp_pico/FreeRTOS-Kernel$ git branch -a
 * main
@@ -27,7 +26,7 @@ richard@richard-virtual-machine:~/Rasp_pico/FreeRTOS-Kernel$ git describe --tags
 V10.4.3-769-g7c0c890c6
 
 
-============pico-sdk===========================
+#============pico-sdk===========================
 
 richard@richard-virtual-machine:~/Rasp_pico/pico-sdk$ git branch -a
 
