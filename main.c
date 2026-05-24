@@ -2,12 +2,15 @@
 #include "pico/stdlib.h"
 #include "FreeRTOS.h"
 #include "task.h"
+#include "my_servo.h"
 
-/* --- 修正 SMP Linker 錯誤的誘餌 --- */
 //extern TaskHandle_t volatile pxCurrentTCBs[ configNUMBER_OF_CORES ];
 //TaskHandle_t volatile pxCurrentTCB = NULL;
 #include <stdio.h>
 #include "pico/stdlib.h"
+
+#define GPIO_PWM_SERVO 16
+
 
 void vApplicationAssert( const char *pcFileName, uint32_t ulLine ) {
     printf("ASSERT Failed at %s:%ld\n", pcFileName, ulLine);
@@ -16,7 +19,7 @@ void vApplicationAssert( const char *pcFileName, uint32_t ulLine ) {
     }
 }
 
-// 任務：只負責印字
+// 任務：只負責印字 (Core 0)
 void vUsbPrintTask(void *pvParameters) {
     (void) pvParameters;
     int count = 0;
@@ -28,8 +31,20 @@ void vUsbPrintTask(void *pvParameters) {
 
 // 串口輸出任務 (鎖定在 Core 1)
 void hello_task(void *pvParameters) {
+    grove_servo_init(GPIO_PWM_SERVO);
+    
+    float angle = 0.0f;
+    bool direction = true; // true: 順時鐘, false: 逆時鐘
+
     while (true) {
-        printf("Task 2 (Core 1) is waving hello!\n");
+	if (direction) {
+            angle += 5.0f;
+            if (angle >= 180.0f) direction = false;
+        } else {
+            angle -= 5.0f;
+            if (angle <= 0.0f) direction = true;
+        }
+        printf("Task 2 (Core 1) servo is waving!\n");
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
