@@ -37,6 +37,7 @@ void hello_task(void *pvParameters) {
     bool direction = true; // true: 順時鐘, false: 逆時鐘
 
     while (true) {
+	grove_servo_set_angle(GPIO_PWM_SERVO, angle);
 	if (direction) {
             angle += 5.0f;
             if (angle >= 180.0f) direction = false;
@@ -45,7 +46,7 @@ void hello_task(void *pvParameters) {
             if (angle <= 0.0f) direction = true;
         }
         printf("Task 2 (Core 1) servo is waving!\n");
-        vTaskDelay(pdMS_TO_TICKS(1000));
+        vTaskDelay(pdMS_TO_TICKS(100));
     }
 }
 

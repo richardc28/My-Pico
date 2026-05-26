@@ -27,7 +27,8 @@ set(FREERTOS_SRC
 
 # 3. 定義執行檔
 add_executable(pico2w_app 
-    main.c 
+    main.c
+    my_servo.c 
     ${FREERTOS_SRC}
 )
 
@@ -44,6 +45,7 @@ target_link_libraries(pico2w_app
     hardware_exception   # <--- 解決 "hardware/exception.h" 缺失
     hardware_timer       # <--- Port 內部通常需要精確計時
     hardware_sync        # <--- 處理 Spinlock 和中斷鎖
+    hardware_pwm         # <--- PWM enable
 )
 
 # 5. 啟用 USB 輸出並產生 UF2
