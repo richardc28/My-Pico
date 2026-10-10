@@ -32,7 +32,9 @@ void vUsbPrintTask(void *pvParameters) {
 // 串口輸出任務 (鎖定在 Core 1)
 void hello_task(void *pvParameters) {
     grove_servo_init(GPIO_PWM_SERVO);
-    
+
+    servo_test(GPIO_PWM_SERVO,2200,800);
+    /*
     float angle = 0.0f;
     bool direction = true; // true: 順時鐘, false: 逆時鐘
 
@@ -48,6 +50,7 @@ void hello_task(void *pvParameters) {
         printf("Task 2 (Core 1) servo is waving!\n");
         vTaskDelay(pdMS_TO_TICKS(100));
     }
+    */
 }
 
 int main() {

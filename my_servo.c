@@ -40,3 +40,26 @@ void grove_servo_set_angle(uint gpio, float angle) {
     // 實時寫入硬體比較暫存器 (CC Register)
     pwm_set_chan_level(pwm_gpio_to_slice_num(gpio), pwm_gpio_to_channel(gpio), pulse_width);
 }
+
+void servo_test(uint gpio,uint max_us_pwm, uint min_us_pwm){
+
+uint slice = pwm_gpio_to_slice_num(gpio);
+    uint chan = pwm_gpio_to_channel(gpio);
+
+    while (1) {
+        printf("\n--- 開始馬達邊界測試 (脈衝從 1000us 漸增到 2000us) ---\n");
+
+        // 從 1000us (1.0ms) 逐步增加到 2000us (2.0ms)
+        for (uint16_t pulse = min_us_pwm; pulse <= max_us_pwm; pulse += 100) {
+            pwm_set_chan_level(slice, chan, pulse);
+            printf("當前發送脈衝寬度: %d us\n", pulse);
+            
+            // 停頓 500ms，讓你觀察馬達是「轉動特定角度」還是「改變旋轉速度」
+            sleep_ms(500); 
+        }
+
+        printf("--- 測試結束，歸位中位點 (1500us) 休息 3 秒 ---\n");
+        pwm_set_chan_level(slice, chan, (min_us_pwm + max_us_pwm) / 2);
+        sleep_ms(3000);
+    }
+}
